@@ -1,0 +1,183 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sketcher</title>
+  <!-- bs4 css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+  <!-- TensorFlow.js script -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+  <!-- canvas script -->
+  <script src="fabric.js"></script>
+  <!-- main script -->
+  <script src="main.js"></script>
+  <style>
+    #like>div {
+      color: green;
+    }
+
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="#">
+      <h1> Draw <small>Game</small>
+      </h1>
+    </a>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col" style="margin-left:100px;">
+        <h4 id="status">Loading Model...</h4>
+        <div stylle="margin-top:25px;">
+          <span>similarity:</span>
+          <div id="like" style="display: inline-flex;gap:2rem;"></div>
+        </div>
+        <canvas id="canvas" class="canvas" width="1200" height="600" style="border:1px solid #b9bfc9;"></canvas>
+        <div class="btn-group" style="margin-top:20px; ">
+          <button type="button" class="btn btn-outline-primary" style="margin-left:10px;">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+
+  const map = [
+    "screwdriver",
+    "wristwatch",
+    "butterfly",
+    "sword",
+    "cat",
+    "shorts",
+    "eyeglasses",
+    "lollipop",
+    "baseball",
+    "traffic_light",
+    "sun",
+    "helmet",
+    "bridge",
+    "alarm_clock",
+    "drums",
+    "book",
+    "broom",
+    "fan",
+    "scissors",
+    "cloud",
+    "tent",
+    "clock",
+    "headphones",
+    "bicycle",
+    "stop_sign",
+    "table",
+    "donut",
+    "umbrella",
+    "smiley_face",
+    "pillow",
+    "bed",
+    "saw",
+    "light_bulb",
+    "shovel",
+    "bird",
+    "syringe",
+    "coffee_cup",
+    "moon",
+    "ice_cream",
+    "moustache",
+    "cell_phone",
+    "pants",
+    "anvil",
+    "radio",
+    "chair",
+    "star",
+    "door",
+    "face",
+    "mushroom",
+    "tree",
+    "rifle",
+    "camera",
+    "lightning",
+    "flower",
+    "basketball",
+    "wheel",
+    "hammer",
+    "hat",
+    "knife",
+    "diving_board",
+    "square",
+    "cup",
+    "mountain",
+    "apple",
+    "spoon",
+    "key",
+    "pencil",
+    "line",
+    "ladder",
+    "triangle",
+    "t-shirt",
+    "dumbbell",
+    "microphone",
+    "snake",
+    "sock",
+    "suitcase",
+    "laptop",
+    "paper_clip",
+    "rainbow",
+    "candle",
+    "bread",
+    "spider",
+    "envelope",
+    "circle",
+    "power_outlet",
+    "tooth",
+    "hot_dog",
+    "frying_pan",
+    "bench",
+    "ceiling_fan",
+    "tennis_racquet",
+    "car",
+    "beard",
+    "axe",
+    "baseball_bat",
+    "pizza",
+    "grapes",
+    "eye",
+    "cookie",
+    "airplane",
+  ]
+
+  const like = document.getElementById('like')
+  let div
+  start(insertLike)
+  const clrBtn = document.getElementsByClassName('btn')[0]
+  clrBtn.addEventListener('click', clear)
+
+  function insertLike(data) {
+    like.innerHTML = ''
+    if (!div)
+      div = document.createElement('div')
+    const fragment = document.createDocumentFragment()
+    data.map(({ name, prob }) => {
+      const _div = div.cloneNode()
+      _div.textContent = name + Math.round(prob * 100) + '%'
+      fragment.appendChild(_div)
+    })
+    like.appendChild(fragment)
+  }
+  const hasExist = new Set()
+
+  async function getRandomTitle() {
+    const data = map.filter(item => !hasExist.has(item))
+    return data[Math.floor(Math.random() * data.length)]
+  }
+  switchTitle()
+  async function switchTitle() {
+    const title = await getRandomTitle();
+    hasExist.add(title)
+    document.getElementById('status').innerHTML = title
+  }
+</script>
+
+</html>
