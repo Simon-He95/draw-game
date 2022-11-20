@@ -44,7 +44,7 @@
   </div>
 </body>
 <script>
-
+  let title
   const map = [
     "screwdriver",
     "wristwatch",
@@ -150,7 +150,16 @@
 
   const like = document.getElementById('like')
   let div
-  start(insertLike)
+  start((data) => {
+    insertLike(data)
+    if (isDrawRight(data)) {
+      setTimeout(() => {
+        alert('nice draw')
+        switchTitle()
+        clear()
+      }, 1000)
+    }
+  })
   const clrBtn = document.getElementsByClassName('btn')[0]
   clrBtn.addEventListener('click', clear)
 
@@ -174,9 +183,13 @@
   }
   switchTitle()
   async function switchTitle() {
-    const title = await getRandomTitle();
+    title = await getRandomTitle();
     hasExist.add(title)
     document.getElementById('status').innerHTML = title
+  }
+
+  function isDrawRight(data) {
+    return data.some(({ name, prob }) => name === title)
   }
 </script>
 
